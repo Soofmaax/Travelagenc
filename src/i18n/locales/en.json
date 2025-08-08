@@ -1,0 +1,55 @@
+{
+  "nav": {
+    "home": "Home",
+    "about": "About",
+    "portfolio": "Portfolio",
+    "services": "Services",
+    "blog": "Blog",
+    "contact": "Contact"
+  },
+  "home": {
+    "title": "Hi, I'm John Doe",
+    "subtitle": "Full Stack Developer",
+    "intro": "I create elegant solutions to complex problems",
+    "cta": {
+      "portfolio": "View My Work",
+      "contact": "Get in Touch"
+    }
+  },
+  "about": {
+    "title": "About Me",
+    "background": "Professional Background",
+    "skills": "Skills & Expertise",
+    "education": "Education & Certifications",
+    "goals": "Professional Goals"
+  },
+  "portfolio": {
+    "title": "My Projects",
+    "viewProject": "View Project",
+    "technologies": "Technologies Used",
+    "visitSite": "Visit Site",
+    "viewCode": "View Code"
+  },
+  "services": {
+    "title": "Services",
+    "development": "Web Development",
+    "design": "UI/UX Design",
+    "consulting": "Technical Consulting",
+    "training": "Training & Workshops"
+  },
+  "contact": {
+    "title": "Get in Touch",
+    "name": "Name",
+    "email": "Email",
+    "message": "Message",
+    "send": "Send Message",
+    "success": "Message sent successfully!",
+    "error": "Error sending message. Please try again."
+  },
+  "blog": {
+    "title": "Blog",
+    "readMore": "Read More",
+    "categories": "Categories",
+    "recentPosts": "Recent Posts"
+  }
+}

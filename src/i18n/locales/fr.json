@@ -1,0 +1,55 @@
+{
+  "nav": {
+    "home": "Accueil",
+    "about": "À Propos",
+    "portfolio": "Portfolio",
+    "services": "Services",
+    "blog": "Blog",
+    "contact": "Contact"
+  },
+  "home": {
+    "title": "Bonjour, je suis John Doe",
+    "subtitle": "Développeur Full Stack",
+    "intro": "Je crée des solutions élégantes à des problèmes complexes",
+    "cta": {
+      "portfolio": "Voir Mes Projets",
+      "contact": "Me Contacter"
+    }
+  },
+  "about": {
+    "title": "À Propos de Moi",
+    "background": "Parcours Professionnel",
+    "skills": "Compétences & Expertise",
+    "education": "Formation & Certifications",
+    "goals": "Objectifs Professionnels"
+  },
+  "portfolio": {
+    "title": "Mes Projets",
+    "viewProject": "Voir le Projet",
+    "technologies": "Technologies Utilisées",
+    "visitSite": "Visiter le Site",
+    "viewCode": "Voir le Code"
+  },
+  "services": {
+    "title": "Services",
+    "development": "Développement Web",
+    "design": "Design UI/UX",
+    "consulting": "Conseil Technique",
+    "training": "Formation & Ateliers"
+  },
+  "contact": {
+    "title": "Me Contacter",
+    "name": "Nom",
+    "email": "Email",
+    "message": "Message",
+    "send": "Envoyer",
+    "success": "Message envoyé avec succès !",
+    "error": "Erreur lors de l'envoi du message. Veuillez réessayer."
+  },
+  "blog": {
+    "title": "Blog",
+    "readMore": "Lire la Suite",
+    "categories": "Catégories",
+    "recentPosts": "Articles Récents"
+  }
+}
