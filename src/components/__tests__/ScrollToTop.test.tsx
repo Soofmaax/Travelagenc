@@ -1,4 +1,4 @@
-import { render } from '@testing-library/react';
+import { render, waitFor } from '@testing-library/react';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import { vi } from 'vitest';
 import ScrollToTop from '../ScrollToTop';
@@ -14,7 +14,7 @@ describe('ScrollToTop', () => {
     window.scrollTo = originalScrollTo;
   });
 
-  it('should scroll to top on route change', () => {
+  it('should scroll to top on route change', async () => {
     const { rerender } = render(
       <MemoryRouter initialEntries={['/']}>
         <ScrollToTop />
@@ -39,7 +39,7 @@ describe('ScrollToTop', () => {
       </MemoryRouter>
     );
 
-    expect(window.scrollTo).toHaveBeenCalledTimes(2);
+    await waitFor(() => expect(window.scrollTo).toHaveBeenCalledTimes(2));
   });
 
   it('should handle scroll errors gracefully', () => {
