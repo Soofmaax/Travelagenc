@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { Trip } from '../data/trips';
 
 interface UseTripsFilterProps {
@@ -19,34 +19,35 @@ export const useTripsFilter = ({ trips, searchTerm }: UseTripsFilterProps) => {
   const [filters, setFilters] = useState<FilterState>({
     selectedDestination: '',
     selectedDuration: '',
-    selectedPrice: ''
+    selectedPrice: '',
   });
 
   // Get unique destinations for filter dropdown
-  const destinations = useMemo(() => 
-    Array.from(new Set(trips.map(trip => trip.destination))), 
+  const destinations = useMemo(
+    () => Array.from(new Set(trips.map(trip => trip.destination))),
     [trips]
   );
 
   // Filter trips based on all criteria
   const filteredTrips = useMemo(() => {
     let results = trips;
-    
+
     // Filter by search term
     if (searchTerm) {
       const term = searchTerm.toLowerCase();
-      results = results.filter(trip => 
-        trip.title.toLowerCase().includes(term) || 
-        trip.destination.toLowerCase().includes(term) ||
-        trip.description.toLowerCase().includes(term)
+      results = results.filter(
+        trip =>
+          trip.title.toLowerCase().includes(term) ||
+          trip.destination.toLowerCase().includes(term) ||
+          trip.description.toLowerCase().includes(term)
       );
     }
-    
+
     // Filter by destination
     if (filters.selectedDestination) {
       results = results.filter(trip => trip.destination === filters.selectedDestination);
     }
-    
+
     // Filter by duration
     if (filters.selectedDuration) {
       switch (filters.selectedDuration) {
@@ -61,7 +62,7 @@ export const useTripsFilter = ({ trips, searchTerm }: UseTripsFilterProps) => {
           break;
       }
     }
-    
+
     // Filter by price
     if (filters.selectedPrice) {
       switch (filters.selectedPrice) {
@@ -76,7 +77,7 @@ export const useTripsFilter = ({ trips, searchTerm }: UseTripsFilterProps) => {
           break;
       }
     }
-    
+
     return results;
   }, [trips, searchTerm, filters]);
 
@@ -88,7 +89,7 @@ export const useTripsFilter = ({ trips, searchTerm }: UseTripsFilterProps) => {
     setFilters({
       selectedDestination: '',
       selectedDuration: '',
-      selectedPrice: ''
+      selectedPrice: '',
     });
   };
 
@@ -97,6 +98,6 @@ export const useTripsFilter = ({ trips, searchTerm }: UseTripsFilterProps) => {
     destinations,
     filters,
     updateFilter,
-    resetFilters
+    resetFilters,
   };
 };
