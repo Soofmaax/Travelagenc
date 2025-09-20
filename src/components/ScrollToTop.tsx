@@ -39,7 +39,7 @@ const ScrollToTop = () => {
         console.error('Fallback scroll failed:', fallbackError);
       }
     }
-  }, [pathname]);
+  });
 
   return null;
 };
