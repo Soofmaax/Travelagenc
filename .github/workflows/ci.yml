@@ -51,6 +51,13 @@ jobs:
           if-no-files-found: ignore
           retention-days: 7
 
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v4
+        with:
+          files: ./coverage/lcov.info
+          flags: unittests
+          fail_ci_if_error: true
+
       - name: Prettier formatting check
         run: npx prettier --check "src/**/*.{ts,tsx,css,json,md}"
 

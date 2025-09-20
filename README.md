@@ -1,6 +1,6 @@
 # Travelagenc — Application React (Vite + TypeScript + Tailwind)
 [![CI](https://github.com/Soofmaax/Travelagenc/actions/workflows/ci.yml/badge.svg)](https://github.com/Soofmaax/Travelagenc/actions/workflows/ci.yml)
-![Coverage](https://img.shields.io/badge/Coverage-via%20CI-brightgreen)
+[![codecov](https://codecov.io/gh/Soofmaax/Travelagenc/branch/main/graph/badge.svg)](https://codecov.io/gh/Soofmaax/Travelagenc)
 [![ESLint](https://img.shields.io/badge/ESLint-enabled-4B32C3?logo=eslint&logoColor=white)](https://eslint.org/)
 [![Prettier](https://img.shields.io/badge/Prettier-enabled-F7B93E?logo=prettier&logoColor=000)](https://prettier.io/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.x-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
@@ -176,9 +176,11 @@ Notes:
   1. Install (`npm ci`)
   2. Lint (`npm run lint`)
   3. Type-check (`npm run typecheck`)
-  4. Tests (`npm run test -- --run`)
-  5. Prettier check (`npx prettier --check "src/**/*.{ts,tsx,css,json,md}"`)
-  6. Build (`npm run build`) — seulement si tout passe
+  4. Tests avec couverture (`npm run test:coverage`)
+  5. Upload du rapport de couverture comme artefact (coverage-report)
+  6. Upload de la couverture vers Codecov (badge dynamique)
+  7. Prettier check (`npx prettier --check "src/**/*.{ts,tsx,css,json,md}"`)
+  8. Build (`npm run build`) — seulement si tout passe
 
 ## Contribution
 - Créez une branche depuis `main`
