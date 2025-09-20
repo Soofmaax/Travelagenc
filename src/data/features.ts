@@ -25,7 +25,7 @@ export const features: Feature[] = [
   },
   {
     icon: Shield,
-    title: 'Tranquillité d\\'Esprit',
+    title: "Tranquillité d'Esprit",
     description:
       'Assistance 24/7, assurance voyage complète et options de réservation flexibles pour voyager sans souci.',
   },
