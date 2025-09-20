@@ -1,7 +1,17 @@
 import { render, waitFor } from '@testing-library/react';
-import { MemoryRouter, Route, Routes } from 'react-router-dom';
+import { useEffect } from 'react';
+import { MemoryRouter, Route, Routes, useNavigate } from 'react-router-dom';
 import { vi } from 'vitest';
 import ScrollToTop from '../ScrollToTop';
+
+function NavigateOnce({ to }: { to: string }) {
+  const navigate = useNavigate();
+  useEffect(() => {
+    navigate(to);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+  return null;
+}
 
 describe('ScrollToTop', () => {
   const originalScrollTo = window.scrollTo;
@@ -28,10 +38,11 @@ describe('ScrollToTop', () => {
     // Check that scrollTo was called (arguments can differ depending on environment)
     expect(window.scrollTo).toHaveBeenCalled();
 
-    // Simuler un changement de route
+    // Simuler un changement de route à l'aide de useNavigate
     rerender(
-      <MemoryRouter initialEntries={['/about']}>
+      <MemoryRouter initialEntries={['/']}>
         <ScrollToTop />
+        <NavigateOnce to="/about" />
         <Routes>
           <Route path="/" element={<div>Home</div>} />
           <Route path="/about" element={<div>About</div>} />
