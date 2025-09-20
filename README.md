@@ -1,5 +1,12 @@
 # Travelagenc — Application React (Vite + TypeScript + Tailwind)
 [![CI](https://github.com/Soofmaax/Travelagenc/actions/workflows/ci.yml/badge.svg)](https://github.com/Soofmaax/Travelagenc/actions/workflows/ci.yml)
+![Coverage](https://img.shields.io/badge/Coverage-via%20CI-brightgreen)
+[![ESLint](https://img.shields.io/badge/ESLint-enabled-4B32C3?logo=eslint&logoColor=white)](https://eslint.org/)
+[![Prettier](https://img.shields.io/badge/Prettier-enabled-F7B93E?logo=prettier&logoColor=000)](https://prettier.io/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.x-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![Vitest](https://img.shields.io/badge/Tests-Vitest-6E9F18?logo=vitest&logoColor=white)](https://vitest.dev/)
+[![TailwindCSS](https://img.shields.io/badge/TailwindCSS-3.x-38B2AC?logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
+[![Node](https://img.shields.io/badge/Node-20.x-339933?logo=node.js&logoColor=white)](https://nodejs.org/)
 
 Une application moderne d’agence de voyage mettant en avant:
 - Une page d’accueil soignée avec Hero, sections de mise en avant et témoignages
