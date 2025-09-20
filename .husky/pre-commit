@@ -1,0 +1,9 @@
+#!/usr/bin/env sh
+# Husky pre-commit hook - runs linters and formatters on staged files
+# Requires: npm ci, then `npm run prepare` once to install Husky
+
+if [ -f "$(dirname "$0")/_/husky.sh" ]; then
+  . "$(dirname "$0")/_/husky.sh"
+fi
+
+npx --no-install lint-staged

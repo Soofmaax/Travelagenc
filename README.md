@@ -1,4 +1,5 @@
 # Travelagenc — Application React (Vite + TypeScript + Tailwind)
+[![CI](https://github.com/Soofmaax/Travelagenc/actions/workflows/ci.yml/badge.svg)](https://github.com/Soofmaax/Travelagenc/actions/workflows/ci.yml)
 
 Une application moderne d’agence de voyage mettant en avant:
 - Une page d’accueil soignée avec Hero, sections de mise en avant et témoignages
@@ -16,6 +17,7 @@ Une application moderne d’agence de voyage mettant en avant:
 - [Variables d’environnement](#variables-denvironnement)
 - [Structure du projet](#structure-du-projet)
 - [Qualité & conventions](#qualité--conventions)
+- [Hooks pre-commit (Husky + lint-staged)](#hooks-pre-commit-husky--lint-staged)
 - [Tests](#tests)
 - [Internationalisation (i18n)](#internationalisation-i18n)
 - [Mode sombre](#mode-sombre)
@@ -103,6 +105,17 @@ Principaux dossiers/fichiers:
 - Composants stylistiques Tailwind via `@layer components` dans `src/index.css`:
   - Exemples: `.btn-primary`, `.btn-secondary`, `.container-custom`, `.section`, `.card`, `.input-field`
 - Nommage clair et dossiers organisés par rôle (components/pages/hooks/utils)
+
+## Hooks pre-commit (Husky + lint-staged)
+- Dépendances: `husky` et `lint-staged` (devDependencies)
+- Activation des hooks (une seule fois) :
+  - `npm run prepare`
+- Ce qui s’exécute avant chaque commit (fichiers stagés uniquement) :
+  - `src/**/*.{ts,tsx}` → `eslint --fix` puis `prettier --write`
+  - `src/**/*.{css,json,md}` → `prettier --write`
+- Config accessible dans `package.json` (clé `lint-staged`).
+- Hook défini dans `.husky/pre-commit`.
+- Pour ignorer temporairement les hooks : `git commit -n`
 
 ## Tests
 - Framework: Vitest
