@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useLayoutEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 
 /**
@@ -18,7 +18,7 @@ import { useLocation } from 'react-router-dom';
 const ScrollToTop = () => {
   const { pathname } = useLocation();
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     try {
       // Vérification de la prise en charge du comportement smooth
       if ('scrollBehavior' in document.documentElement.style) {
