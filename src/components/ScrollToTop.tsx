@@ -32,8 +32,12 @@ const ScrollToTop = () => {
       }
     } catch (error) {
       console.error('Erreur lors du défilement:', error);
-      // Fallback en cas d'erreur
-      window.scrollTo(0, 0);
+      // Fallback en cas d'erreur - encapsulé pour éviter de relancer une exception
+      try {
+        window.scrollTo(0, 0);
+      } catch (fallbackError) {
+        console.error('Fallback scroll failed:', fallbackError);
+      }
     }
   }, [pathname]);
 
