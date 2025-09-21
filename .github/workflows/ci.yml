@@ -52,11 +52,12 @@ jobs:
           retention-days: 7
 
       - name: Upload coverage to Codecov
+        if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')
         uses: codecov/codecov-action@v4
         with:
           files: ./coverage/lcov.info
           flags: unittests
-          fail_ci_if_error: true
+          fail_ci_if_error: false
 
       - name: Prettier formatting check
         run: npx prettier --check "src/**/*.{ts,tsx,css,json,md}"
