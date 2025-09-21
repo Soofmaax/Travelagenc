@@ -1,7 +1,7 @@
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { CalendarRange, Minus, Plus, UserRound, Wallet } from 'lucide-react';
 import Fuse from 'fuse.js';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import type { Currency, SearchParams, TravelClass } from '../types';
 import { currencies } from '../utils/currency';
 
@@ -33,6 +33,7 @@ const clamp = (value: number, min: number, max: number) => Math.max(min, Math.mi
 
 const BookingSearchBar: React.FC<BookingSearchBarProps> = ({ onDestinationSearch, onSearchParams }) => {
   const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
 
   const [destination, setDestination] = useState('');
   const [startDate, setStartDate] = useState<string | null>(null);
@@ -48,6 +49,25 @@ const BookingSearchBar: React.FC<BookingSearchBarProps> = ({ onDestinationSearch
     if (!startDate || !endDate) return true;
     return new Date(startDate) <= new Date(endDate);
   }, [startDate, endDate]);
+
+  // Hydrate from URL on mount
+  useEffect(() => {
+    const d = searchParams.get('destination') || '';
+    const sd = searchParams.get('startDate');
+    const ed = searchParams.get('endDate');
+    const ad = parseInt(searchParams.get('adults') || '1', 10);
+    const ch = parseInt(searchParams.get('children') || '0', 10);
+    const tc = (searchParams.get('class') as TravelClass) || 'economy';
+    const cur = (searchParams.get('currency') as Currency) || 'EUR';
+
+    if (d) setDestination(d);
+    if (sd) setStartDate(sd);
+    if (ed) setEndDate(ed);
+    setTravelers({ adults: clamp(isNaN(ad) ? 1 : ad, 1, 9), children: clamp(isNaN(ch) ? 0 : ch, 0, 9) });
+    setTravelClass(tc);
+    setCurrency(cur);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const handleDestinationChange = (value: string) => {
     setDestination(value);
@@ -79,6 +99,17 @@ const BookingSearchBar: React.FC<BookingSearchBarProps> = ({ onDestinationSearch
       travelClass,
       currency,
     };
+
+    // Sync to URL
+    const qp = new URLSearchParams();
+    qp.set('destination', destination);
+    if (startDate) qp.set('startDate', startDate);
+    if (endDate) qp.set('endDate', endDate);
+    qp.set('adults', String(travelers.adults));
+    qp.set('children', String(travelers.children));
+    qp.set('class', travelClass);
+    qp.set('currency', currency);
+    setSearchParams(qp);
 
     // Callbacks pour intégration actuelle
     onDestinationSearch?.(destination);
