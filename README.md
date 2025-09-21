@@ -191,3 +191,4 @@ Notes:
 ---
 
 Pour toute question ou amélioration souhaitée (déploiement, hooks de pre-commit, règles ESLint supplémentaires, tests d’accessibilité), n’hésitez pas à ouvrir une issue ou une PR.
+<!-- ci: retrigger run to validate currency.ts symbol fix -->
