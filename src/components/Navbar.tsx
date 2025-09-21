@@ -3,6 +3,7 @@ import { NavLink } from 'react-router-dom';
 import { Menu, X, Globe, Phone } from 'lucide-react';
 import DarkModeToggle from './DarkModeToggle';
 import { useCurrency } from '../hooks/useCurrency';
+import type { Currency } from '../types';
 
 interface NavbarProps {
   isScrolled: boolean;
