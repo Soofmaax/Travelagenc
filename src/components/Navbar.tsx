@@ -27,7 +27,7 @@ const Navbar: React.FC<NavbarProps> = ({ isScrolled }) => {
               <select
                 aria-label="Sélecteur de devise"
                 value={currency}
-                onChange={e => setCurrency(e.target.value as any)}
+                onChange={e => setCurrency(e.target.value as Currency)}
                 className={`bg-transparent rounded-md border px-2 py-0.5 ${isScrolled ? 'border-gray-300 text-gray-700 dark:text-gray-200 dark:border-gray-700' : 'border-white/60 text-white'}`}
               >
                 <option value="EUR">EUR €</option>
