@@ -59,42 +59,7 @@ jobs:
           flags: unittests
           fail_ci_if_error: false
 
-      - name: Prettier formatting check (PR - only changed files)
-        if: github.event_name == 'pull_request'
-        run: |
-          set -e
-          CHANGED=$(git fetch origin "${{ github.base_ref }}" --depth=1 >/dev/null 2>&1 || true; git diff --name-only "origin/${{ github.base_ref }}"... | grep -E '^src/.*\.(ts|tsx|css|json|md)
-
-  build:
-    name: Build app
-    runs-on: ubuntu-latest
-    needs: checks
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-          cache: 'npm'
-
-      - name: Install dependencies
-        run: npm install --no-audit --no-fund
-
-      - name: Build
-        run: npm run build || true)
-          if [ -z "$CHANGED" ]; then
-            echo "No changed files needing Prettier check."
-            exit 0
-          fi
-          echo "Checking Prettier on changed files:"
-          echo "$CHANGED"
-          npx prettier --check $CHANGED
-
-      - name: Prettier formatting check (push - full)
-        if: github.event_name == 'push'
+      - name: Prettier formatting check
         run: npx prettier --check "src/**/*.{ts,tsx,css,json,md}"
 
   build:
