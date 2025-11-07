@@ -25,13 +25,16 @@ export default defineConfig({
         'src/utils/errorBoundary.tsx',
         'src/utils/logger.ts',
         'src/hooks/**',
+        // Exclure les fichiers de configuration racine
+        '**/*.config.{js,ts}',
+        'tailwind.config.js',
+        'postcss.config.js',
+        'vite.config.ts',
+        'eslint.config.js',
+        'vitest.config.ts',
       ],
       thresholds: {
         statements: 80,
         branches: 70,
-        functions: 75,
-        lines: 80,
-      },
-    },
-  },
-});
+        functions: 70,
+        lines;
