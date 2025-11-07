@@ -22,6 +22,8 @@ class ErrorBoundary extends Component<Props, State> {
 
   public componentDidCatch(error: Error, _errorInfo: ErrorInfo) {
     // Use centralized logger. Avoid exposing detailed stacks in production.
+    // Mark _errorInfo as intentionally unused (for linting).
+    void _errorInfo;
     logger.error('React Error Boundary caught an error', error);
   }
 
