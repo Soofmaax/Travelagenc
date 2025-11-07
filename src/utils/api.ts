@@ -24,8 +24,14 @@ class Api {
   private async request<T>(endpoint: string, config: RequestConfig = {}): Promise<T> {
     try {
       const { params, ...requestConfig } = config;
-      const url = new URL(this.baseURL + endpoint);
-      
+
+      // Build a valid absolute URL even if baseURL is empty and endpoint is relative
+      const base =
+        this.baseURL ||
+        (typeof window !== 'undefined' && window.location?.origin) ||
+        'http://localhost';
+      const url = new URL(endpoint, base);
+
       if (params) {
         Object.entries(params).forEach(([key, value]) => {
           url.searchParams.append(key, value);

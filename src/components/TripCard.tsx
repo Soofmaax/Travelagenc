@@ -2,12 +2,16 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Calendar, MapPin, Star } from 'lucide-react';
 import { Trip } from '../data/trips';
+import { useCurrency } from '../hooks/useCurrency';
+import { formatPrice } from '../utils/currency';
 
 interface TripCardProps {
   trip: Trip;
 }
 
 const TripCard: React.FC<TripCardProps> = ({ trip }) => {
+  const { currency, locale } = useCurrency();
+
   return (
     <div className="card destination-card group bg-white dark:bg-gray-800 shadow-md hover:shadow-xl dark:shadow-gray-900/20">
       <div className="relative overflow-hidden">
@@ -38,7 +42,7 @@ const TripCard: React.FC<TripCardProps> = ({ trip }) => {
             <span>{trip.duration} jours</span>
           </div>
           <div className="text-blue-900 dark:text-blue-400 font-bold">
-            €{trip.price}
+            {formatPrice(trip.price, currency, locale)}
             <span className="text-sm font-normal text-gray-600 dark:text-gray-400">/personne</span>
           </div>
         </div>

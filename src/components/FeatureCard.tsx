@@ -1,5 +1,5 @@
 import React from 'react';
-import { DivideIcon as LucideIcon } from 'lucide-react';
+import type { LucideIcon } from 'lucide-react';
 
 interface FeatureCardProps {
   icon: LucideIcon;
@@ -15,7 +15,7 @@ const FeatureCard: React.FC<FeatureCardProps> = ({
   icon: Icon,
   title,
   description,
-  className = ''
+  className = '',
 }) => {
   return (
     <div className={`text-center p-6 ${className}`}>
@@ -29,5 +29,3 @@ const FeatureCard: React.FC<FeatureCardProps> = ({
 };
 
 export default FeatureCard;
-
-export default FeatureCard

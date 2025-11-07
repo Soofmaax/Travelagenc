@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useLayoutEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 
 /**
@@ -18,7 +18,7 @@ import { useLocation } from 'react-router-dom';
 const ScrollToTop = () => {
   const { pathname } = useLocation();
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     try {
       // Vérification de la prise en charge du comportement smooth
       if ('scrollBehavior' in document.documentElement.style) {
@@ -32,8 +32,12 @@ const ScrollToTop = () => {
       }
     } catch (error) {
       console.error('Erreur lors du défilement:', error);
-      // Fallback en cas d'erreur
-      window.scrollTo(0, 0);
+      // Fallback en cas d'erreur - encapsulé pour éviter de relancer une exception
+      try {
+        window.scrollTo(0, 0);
+      } catch (fallbackError) {
+        console.error('Fallback scroll failed:', fallbackError);
+      }
     }
   }, [pathname]);
 

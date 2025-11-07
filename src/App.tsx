@@ -9,22 +9,25 @@ import LegalPage from './pages/LegalPage';
 import DestinationPage from './pages/DestinationPage';
 import Layout from './components/Layout';
 import ScrollToTop from './components/ScrollToTop';
+import { CurrencyProvider } from './hooks/useCurrency';
 
 function App() {
   return (
     <Router>
-      <ScrollToTop />
-      <Routes>
-        <Route path="/" element={<Layout />}>
-          <Route index element={<HomePage />} />
-          <Route path="trips" element={<TripsPage />} />
-          <Route path="trips/:id" element={<TripDetailPage />} />
-          <Route path="booking/:id?" element={<BookingPage />} />
-          <Route path="confirmation/:id" element={<ConfirmationPage />} />
-          <Route path="legal" element={<LegalPage />} />
-          <Route path="destination/:country" element={<DestinationPage />} />
-        </Route>
-      </Routes>
+      <CurrencyProvider>
+        <ScrollToTop />
+        <Routes>
+          <Route path="/" element={<Layout />}>
+            <Route index element={<HomePage />} />
+            <Route path="trips" element={<TripsPage />} />
+            <Route path="trips/:id" element={<TripDetailPage />} />
+            <Route path="booking/:id?" element={<BookingPage />} />
+            <Route path="confirmation/:id" element={<ConfirmationPage />} />
+            <Route path="legal" element={<LegalPage />} />
+            <Route path="destination/:country" element={<DestinationPage />} />
+          </Route>
+        </Routes>
+      </CurrencyProvider>
     </Router>
   );
 }

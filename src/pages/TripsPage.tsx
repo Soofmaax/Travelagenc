@@ -1,9 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { trips } from '../data/trips';
 import HeroSection from '../components/HeroSection';
 import FilterSidebar from '../components/FilterSidebar';
 import TripsGrid from '../components/TripsGrid';
-import SearchBar from '../components/SearchBar';
 import { useTripsFilter } from '../hooks/useTripsFilter';
 
 /**
@@ -17,13 +16,10 @@ const TripsPage: React.FC = () => {
     setSearchTerm(term);
   };
 
-  const {
-    filteredTrips,
-    destinations,
-    filters,
-    updateFilter,
-    resetFilters
-  } = useTripsFilter({ trips, searchTerm });
+  const { filteredTrips, destinations, filters, updateFilter, resetFilters } = useTripsFilter({
+    trips,
+    searchTerm,
+  });
 
   return (
     <div>
@@ -42,12 +38,12 @@ const TripsPage: React.FC = () => {
               selectedDestination={filters.selectedDestination}
               selectedDuration={filters.selectedDuration}
               selectedPrice={filters.selectedPrice}
-              onDestinationChange={(value) => updateFilter('selectedDestination', value)}
-              onDurationChange={(value) => updateFilter('selectedDuration', value)}
-              onPriceChange={(value) => updateFilter('selectedPrice', value)}
+              onDestinationChange={value => updateFilter('selectedDestination', value)}
+              onDurationChange={value => updateFilter('selectedDuration', value)}
+              onPriceChange={value => updateFilter('selectedPrice', value)}
               onResetFilters={resetFilters}
             />
-            
+
             <div className="lg:w-3/4">
               <TripsGrid trips={filteredTrips} onResetFilters={resetFilters} />
             </div>

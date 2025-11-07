@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import { Menu, X, Globe, Phone } from 'lucide-react';
 import DarkModeToggle from './DarkModeToggle';
+import { useCurrency } from '../hooks/useCurrency';
+import type { Currency } from '../types';
 
 interface NavbarProps {
   isScrolled: boolean;
@@ -9,6 +11,7 @@ interface NavbarProps {
 
 const Navbar: React.FC<NavbarProps> = ({ isScrolled }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { currency, setCurrency } = useCurrency();
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -20,9 +23,18 @@ const Navbar: React.FC<NavbarProps> = ({ isScrolled }) => {
         {/* Barre supérieure avec infos de contact */}
         <div className={`hidden md:flex justify-between items-center py-2 text-sm ${isScrolled ? 'text-gray-600 dark:text-gray-300' : 'text-gray-200'}`}>
           <div className="flex items-center space-x-6">
-            <div className="flex items-center space-x-1">
+            <div className="flex items-center space-x-2">
               <Globe size={14} />
-              <span>Français | EUR</span>
+              <select
+                aria-label="Sélecteur de devise"
+                value={currency}
+                onChange={e => setCurrency(e.target.value as Currency)}
+                className={`bg-transparent rounded-md border px-2 py-0.5 ${isScrolled ? 'border-gray-300 text-gray-700 dark:text-gray-200 dark:border-gray-700' : 'border-white/60 text-white'}`}
+              >
+                <option value="EUR">EUR €</option>
+                <option value="USD">USD $</option>
+                <option value="GBP">GBP £</option>
+              </select>
             </div>
             <div className="flex items-center space-x-1">
               <Phone size={14} />

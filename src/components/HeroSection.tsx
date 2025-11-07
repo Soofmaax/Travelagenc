@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import SearchBar from './SearchBar';
+import BookingSearchBar from './BookingSearchBar';
 
 interface HeroSectionProps {
   title: string;
@@ -43,8 +43,8 @@ const HeroSection: React.FC<HeroSectionProps> = ({
         </p>
         
         {showSearchBar && onSearch && (
-          <div className="flex justify-center mb-12">
-            <SearchBar onSearch={onSearch} />
+          <div className="flex justify-center mb-12 w-full">
+            <BookingSearchBar onDestinationSearch={onSearch} />
           </div>
         )}
         
