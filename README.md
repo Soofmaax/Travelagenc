@@ -7,6 +7,8 @@
 [![Vitest](https://img.shields.io/badge/Tests-Vitest-6E9F18?logo=vitest&logoColor=white)](https://vitest.dev/)
 [![TailwindCSS](https://img.shields.io/badge/TailwindCSS-3.x-38B2AC?logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
 [![Node](https://img.shields.io/badge/Node-20.x-339933?logo=node.js&logoColor=white)](https://nodejs.org/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![Dependabot](https://img.shields.io/badge/Dependabot-enabled-blue?logo=dependabot)](https://github.com/Soofmaax/Travelagenc/security/dependabot)
 
 Une application moderne d’agence de voyage mettant en avant:
 - Une page d’accueil soignée avec Hero, sections de mise en avant et témoignages
@@ -181,6 +183,25 @@ Notes:
   6. Upload de la couverture vers Codecov (badge dynamique)
   7. Prettier check (`npx prettier --check "src/**/*.{ts,tsx,css,json,md}"`)
   8. Build (`npm run build`) — seulement si tout passe
+  9. Sécurité: Gitleaks (secrets), npm audit, Trufflehog, détection des dépendances circulaires (madge), duplication (jscpd)
+
+## 🔒 Security
+
+Ce projet suit des bonnes pratiques de sécurité :
+- Automated security scanning (Gitleaks, npm audit, Dependabot, Trufflehog)
+- CSP/HSTS/X-Frame-Options configurables via `public/_headers`
+- AUCUN secret dans le bundle client (les variables `VITE_*` sont publiques)
+- Gestion des erreurs en production (sanitisation + intégration monitoring)
+- Mises à jour de dépendances automatisées (Dependabot)
+
+Voir [SECURITY.md](SECURITY.md) pour la politique de divulgation.
+
+## 📸 Screenshots
+
+Des captures peuvent être ajoutées sous `docs/screenshots/`:
+- Homepage — `docs/screenshots/homepage.png`
+- Trip Details — `docs/screenshots/trip-detail.png`
+- Dark Mode — `docs/screenshots/dark-mode.png`
 
 ## Contribution
 - Créez une branche depuis `main`
