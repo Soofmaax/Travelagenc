@@ -7,6 +7,7 @@ interface ApiOptions {
 
 interface RequestConfig extends RequestInit {
   params?: Record<string, string>;
+  timeoutMs?: number;
 }
 
 class Api {
@@ -23,9 +24,8 @@ class Api {
 
   private async request<T>(endpoint: string, config: RequestConfig = {}): Promise<T> {
     try {
-      const { params, ...requestConfig } = config;
+      const { params, timeoutMs, ...requestConfig } = config;
 
-      // Build a valid absolute URL even if baseURL is empty and endpoint is relative
       const base =
         this.baseURL ||
         (typeof window !== 'undefined' && window.location?.origin) ||
@@ -38,12 +38,25 @@ class Api {
         });
       }
 
+      let controller: AbortController | undefined;
+      if (timeoutMs && timeoutMs > 0) {
+        controller = new AbortController();
+      }
+
+      const timer =
+        controller && timeoutMs
+          ? setTimeout(() => controller?.abort(), timeoutMs)
+          : undefined;
+
       const response = await fetch(url.toString(), {
         ...requestConfig,
         headers: {
           ...this.defaultHeaders,
           ...requestConfig.headers,
         },
+        signal: controller ? controller.signal : requestConfig.signal,
+      }).finally(() => {
+        if (timer) clearTimeout(timer);
       });
 
       if (!response.ok) {
