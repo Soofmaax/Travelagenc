@@ -10,14 +10,11 @@ export default defineConfig({
     coverage: {
       provider: 'v8',
       reporter: ['text', 'json', 'html', 'lcov'],
-      // Inclure explicitement les zones couvertes (utils, hooks, composants testés)
+      // Réactivation de la couverture sur tous les composants
       include: [
         'src/utils/**',
         'src/hooks/**',
-        'src/components/TripCard.tsx',
-        'src/components/TripsGrid.tsx',
-        'src/components/FilterSidebar.tsx',
-        'src/components/Layout.tsx',
+        'src/components/**',
       ],
       exclude: [
         'node_modules/',
