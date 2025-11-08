@@ -22,9 +22,6 @@ export default defineConfig({
         'src/App.tsx',
         'src/main.tsx',
         'src/index.css',
-        'src/utils/errorBoundary.tsx',
-        'src/utils/logger.ts',
-        'src/hooks/**',
         // Exclure les fichiers de configuration racine
         '**/*.config.{js,ts}',
         'tailwind.config.js',
@@ -36,7 +33,7 @@ export default defineConfig({
       thresholds: {
         statements: 80,
         branches: 70,
-        functions: 70,
+        functions: 75,
         lines: 80,
       },
     },

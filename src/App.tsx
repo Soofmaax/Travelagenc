@@ -9,7 +9,7 @@ import LegalPage from './pages/LegalPage';
 import DestinationPage from './pages/DestinationPage';
 import Layout from './components/Layout';
 import ScrollToTop from './components/ScrollToTop';
-import { CurrencyProvider } from './hooks/useCurrency';
+import { CurrencyProvider } from './hooks/CurrencyProvider';
 
 function App() {
   return (
