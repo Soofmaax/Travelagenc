@@ -23,6 +23,7 @@ const BookingSearchBar: React.FC<BookingSearchBarProps> = ({ onDestinationSearch
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
 
+  const [destination, setDestination] = useState('');
   const deferredDestination = useDeferredValue(destination);
 
   useEffect(() => {
@@ -34,8 +35,6 @@ const BookingSearchBar: React.FC<BookingSearchBarProps> = ({ onDestinationSearch
       setSuggestions([]);
     }
   }, [deferredDestination]);
-
-  const [destination, setDestination] = useState('');
   const [startDate, setStartDate] = useState<string | null>(null);
   const [endDate, setEndDate] = useState<string | null>(null);
   const [travelers, setTravelers] = useState({ adults: 1, children: 0 });

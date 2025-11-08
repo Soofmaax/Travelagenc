@@ -66,15 +66,15 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
       return;
     }
 
-    const exactMatch = countries.find(country => country.toLowerCase() === searchTerm.toLowerCase());
+    const exactMatch = COUNTRIES_FR.find(country => country.toLowerCase() === searchTerm.toLowerCase());
 
     if (exactMatch) {
       onSearch(exactMatch);
       navigate(`/destination/${encodeURIComponent(exactMatch.toLowerCase())}`);
     } else {
-      const suggestions = fuse.search(searchTerm).map(result => result.item);
-      if (suggestions.length > 0) {
-        setError(`Pays non trouvé. Vouliez-vous dire : ${suggestions[0]} ?`);
+      const foundSuggestions = fuse.search(searchTerm).map(result => result.item);
+      if (foundSuggestions.length > 0) {
+        setError(`Pays non trouvé. Vouliez-vous dire : ${foundSuggestions[0]} ?`);
       } else {
         setError("Pays non trouvé. Veuillez vérifier l'orthographe.");
       }
