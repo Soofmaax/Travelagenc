@@ -1,16 +1,11 @@
-import React, { useEffect, useMemo, useState, useDeferredValue } from 'react';
+import React, { useEffect, useState } from 'react';
 import { CalendarRange, Minus, Plus, UserRound, Wallet } from 'lucide-react';
-import Fuse from 'fuse.js';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import type { Currency, SearchParams, TravelClass } from '../types';
 import { currencies } from '../utils/currency';
 import { COUNTRIES_FR } from '../data/countries';
-
-const fuse = new Fuse(COUNTRIES_FR, {
-  includeScore: true,
-  threshold: 0.3,
-  minMatchCharLength: 1,
-});
+import { useDestinationSuggestions } from '../hooks/useDestinationSuggestions';
+import { useDateRangeValidation } from '../hooks/useDateRangeValidation';
 
 interface BookingSearchBarProps {
   onDestinationSearch?: (destination: string) => void;
@@ -24,30 +19,16 @@ const BookingSearchBar: React.FC<BookingSearchBarProps> = ({ onDestinationSearch
   const [searchParams, setSearchParams] = useSearchParams();
 
   const [destination, setDestination] = useState('');
-  const deferredDestination = useDeferredValue(destination);
-
-  useEffect(() => {
-    const value = deferredDestination;
-    if (value && value.length > 0) {
-      const results = fuse.search(value).map(r => r.item);
-      setSuggestions(results.slice(0, 5));
-    } else {
-      setSuggestions([]);
-    }
-  }, [deferredDestination]);
   const [startDate, setStartDate] = useState<string | null>(null);
   const [endDate, setEndDate] = useState<string | null>(null);
   const [travelers, setTravelers] = useState({ adults: 1, children: 0 });
   const [travelClass, setTravelClass] = useState<TravelClass>('economy');
   const [currency, setCurrency] = useState<Currency>('EUR');
 
-  const [suggestions, setSuggestions] = useState<string[]>([]);
-  const [error, setError] = useState('');
+  const suggestions = useDestinationSuggestions(COUNTRIES_FR, destination);
+  const { isValidRange, error: rangeError } = useDateRangeValidation(startDate, endDate);
 
-  const isValidRange = useMemo(() => {
-    if (!startDate || !endDate) return true;
-    return new Date(startDate) <= new Date(endDate);
-  }, [startDate, endDate]);
+  const [error, setError] = useState('');
 
   // Hydrate from URL on mount
   useEffect(() => {
@@ -160,7 +141,7 @@ const BookingSearchBar: React.FC<BookingSearchBarProps> = ({ onDestinationSearch
               className="w-full rounded-lg border border-gray-300 bg-white py-2.5 pl-10 pr-3 focus:outline-none focus:ring-2 focus:ring-blue-900"
             />
           </div>
-          {!isValidRange && <p className="text-xs text-red-600 mt-1">La date de retour doit être après le départ.</p>}
+          {!isValidRange && <p className="text-xs text-red-600 mt-1">{rangeError}</p>}
         </div>
 
         {/* Voyageurs / Classe */}

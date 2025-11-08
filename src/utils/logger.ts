@@ -54,11 +54,15 @@ class Logger {
   }
 
   public info(message: string, ...args: unknown[]): void {
-    console.info(this.formatMessage('info', message), ...args);
+    if (this.isDevelopment) {
+      console.info(this.formatMessage('info', message), ...args);
+    }
   }
 
   public warn(message: string, ...args: unknown[]): void {
-    console.warn(this.formatMessage('warn', message), ...args);
+    if (this.isDevelopment) {
+      console.warn(this.formatMessage('warn', message), ...args);
+    }
   }
 
   public error(message: string, error?: Error, ...args: unknown[]): void {

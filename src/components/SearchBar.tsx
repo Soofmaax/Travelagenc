@@ -1,14 +1,8 @@
-import React, { useState, useEffect, useRef, useDeferredValue } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Search, X } from 'lucide-react';
-import Fuse from 'fuse.js';
 import { useNavigate } from 'react-router-dom';
 import { COUNTRIES_FR } from '../data/countries';
-
-const fuse = new Fuse(COUNTRIES_FR, {
-  includeScore: true,
-  threshold: 0.3,
-  minMatchCharLength: 1,
-});
+import { useDestinationSuggestions } from '../hooks/useDestinationSuggestions';
 
 interface SearchBarProps {
   onSearch: (searchTerm: string) => void;
@@ -16,23 +10,15 @@ interface SearchBarProps {
 
 const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
   const [searchTerm, setSearchTerm] = useState('');
-  const [suggestions, setSuggestions] = useState<string[]>([]);
+  const suggestions = useDestinationSuggestions(COUNTRIES_FR, searchTerm);
   const [isOpen, setIsOpen] = useState(false);
   const [error, setError] = useState('');
   const wrapperRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
-  const deferredTerm = useDeferredValue(searchTerm);
 
   useEffect(() => {
-    if (searchTerm.length === 0) {
-      setSuggestions([]);
-      setIsOpen(false);
-      return;
-    }
-    const results = fuse.search(deferredTerm).map(result => result.item);
-    setSuggestions(results.slice(0, 5));
-    setIsOpen(results.length > 0);
-  }, [deferredTerm, searchTerm]);
+    setIsOpen(suggestions.length > 0 && searchTerm.length > 0);
+  }, [suggestions, searchTerm]);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -53,7 +39,6 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
 
   const handleSuggestionClick = (country: string) => {
     setSearchTerm(country);
-    setSuggestions([]);
     setIsOpen(false);
     navigate(`/destination/${encodeURIComponent(country.toLowerCase())}`);
   };
@@ -72,9 +57,8 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
       onSearch(exactMatch);
       navigate(`/destination/${encodeURIComponent(exactMatch.toLowerCase())}`);
     } else {
-      const foundSuggestions = fuse.search(searchTerm).map(result => result.item);
-      if (foundSuggestions.length > 0) {
-        setError(`Pays non trouvé. Vouliez-vous dire : ${foundSuggestions[0]} ?`);
+      if (suggestions.length > 0) {
+        setError(`Pays non trouvé. Vouliez-vous dire : ${suggestions[0]} ?`);
       } else {
         setError("Pays non trouvé. Veuillez vérifier l'orthographe.");
       }
@@ -83,7 +67,6 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
 
   const clearSearch = () => {
     setSearchTerm('');
-    setSuggestions([]);
     setError('');
     setIsOpen(false);
   };
