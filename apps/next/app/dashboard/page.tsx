@@ -4,10 +4,10 @@ import { useEffect, useState } from 'react';
 import { authClient } from '../../lib/auth-client';
 
 export default function DashboardPage() {
-  const [session, setSession] = useState<any>(null);
+  const [session, setSession] = useState<{ user?: { email?: string } } | null>(null);
 
   useEffect(() => {
-    const sub = authClient.session.subscribe((s) => setSession(s));
+    const sub = authClient.session.subscribe((s) => setSession(s as { user?: { email?: string } }));
     return () => sub.unsubscribe();
   }, []);
 

@@ -17,7 +17,7 @@ export default function LoginPage() {
         password,
         callbackURL: '/dashboard',
       });
-    } catch (err) {
+    } catch {
       setError('Échec de connexion');
     }
   };

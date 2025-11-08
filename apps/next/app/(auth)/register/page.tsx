@@ -19,7 +19,7 @@ export default function RegisterPage() {
         name,
         callbackURL: '/dashboard',
       });
-    } catch (err) {
+    } catch {
       setError('Échec de création de compte');
     }
   };
