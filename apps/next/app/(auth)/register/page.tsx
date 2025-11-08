@@ -28,7 +28,7 @@ export default function RegisterPage() {
     <main className="max-w-md mx-auto">
       <h1 className="text-2xl font-semibold mb-4">Créer un compte</h1>
       {error && <div className="mb-2 rounded border border-red-200 bg-red-50 text-red-800 px-3 py-2">{error}</div>}
-      <form onSubmit={submit} className="space-y-3">
+      <form onSubmit={submit} className="space-y-3" data-testid="register-form">
         <div>
           <label className="block text-sm mb-1">Nom</label>
           <input
@@ -37,6 +37,7 @@ export default function RegisterPage() {
             value={name}
             onChange={e => setName(e.target.value)}
             required
+            data-testid="register-name"
           />
         </div>
         <div>
@@ -47,6 +48,7 @@ export default function RegisterPage() {
             value={email}
             onChange={e => setEmail(e.target.value)}
             required
+            data-testid="register-email"
           />
         </div>
         <div>
@@ -57,9 +59,10 @@ export default function RegisterPage() {
             value={password}
             onChange={e => setPassword(e.target.value)}
             required
+            data-testid="register-password"
           />
         </div>
-        <button className="px-4 py-2 rounded bg-blue-600 text-white" type="submit">Créer</button>
+        <button className="px-4 py-2 rounded bg-blue-600 text-white" type="submit" data-testid="register-submit">Créer</button>
       </form>
     </main>
   );

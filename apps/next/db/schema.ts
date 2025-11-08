@@ -1,4 +1,4 @@
-import { pgTable, serial, text, timestamp, varchar, integer } from 'drizzle-orm/pg-core';
+import { pgTable, serial, text, timestamp, varchar, integer, boolean } from 'drizzle-orm/pg-core';
 
 // Minimal BetterAuth-compatible schema (users, sessions, accounts)
 // Adjust as needed based on BetterAuth adapter docs.
@@ -27,4 +27,15 @@ export const accounts = pgTable('accounts', {
   accessToken: text('access_token'),
   refreshToken: text('refresh_token'),
   createdAt: timestamp('created_at', { withTimezone: false }).defaultNow().notNull(),
+});
+
+// Courses table for /api/courses endpoints (POST/PUT)
+export const courses = pgTable('courses', {
+  id: serial('id').primaryKey(),
+  title: varchar('title', { length: 255 }).notNull(),
+  description: text('description'),
+  price: integer('price'),
+  published: boolean('published').notNull().default(false),
+  createdAt: timestamp('created_at', { withTimezone: false }).defaultNow().notNull(),
+  updatedAt: timestamp('updated_at', { withTimezone: false }).defaultNow().notNull(),
 });

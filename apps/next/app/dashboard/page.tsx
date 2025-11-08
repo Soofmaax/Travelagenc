@@ -16,10 +16,11 @@ export default function DashboardPage() {
       <h1 className="text-2xl font-semibold mb-4">Dashboard</h1>
       {session ? (
         <div className="space-y-2">
-          <p>Connecté en tant que: {session.user?.email}</p>
+          <p data-testid="user-email">Connecté en tant que: {session.user?.email}</p>
           <button
             className="px-4 py-2 rounded bg-slate-100"
             onClick={async () => authClient.signOut()}
+            data-testid="signout-button"
           >
             Déconnexion
           </button>
