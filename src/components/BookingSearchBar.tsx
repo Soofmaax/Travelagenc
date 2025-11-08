@@ -1,24 +1,12 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState, useDeferredValue } from 'react';
 import { CalendarRange, Minus, Plus, UserRound, Wallet } from 'lucide-react';
 import Fuse from 'fuse.js';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import type { Currency, SearchParams, TravelClass } from '../types';
 import { currencies } from '../utils/currency';
+import { COUNTRIES_FR } from '../data/countries';
 
-const countries = [
-  'France',
-  'Espagne',
-  'Italie',
-  'Portugal',
-  'Royaume-Uni',
-  'États-Unis',
-  'Canada',
-  'Japon',
-  'Thaïlande',
-  'Maroc',
-];
-
-const fuse = new Fuse(countries, {
+const fuse = new Fuse(COUNTRIES_FR, {
   includeScore: true,
   threshold: 0.3,
   minMatchCharLength: 1,
@@ -34,6 +22,18 @@ const clamp = (value: number, min: number, max: number) => Math.max(min, Math.mi
 const BookingSearchBar: React.FC<BookingSearchBarProps> = ({ onDestinationSearch, onSearchParams }) => {
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
+
+  const deferredDestination = useDeferredValue(destination);
+
+  useEffect(() => {
+    const value = deferredDestination;
+    if (value && value.length > 0) {
+      const results = fuse.search(value).map(r => r.item);
+      setSuggestions(results.slice(0, 5));
+    } else {
+      setSuggestions([]);
+    }
+  }, [deferredDestination]);
 
   const [destination, setDestination] = useState('');
   const [startDate, setStartDate] = useState<string | null>(null);
@@ -72,12 +72,6 @@ const BookingSearchBar: React.FC<BookingSearchBarProps> = ({ onDestinationSearch
   const handleDestinationChange = (value: string) => {
     setDestination(value);
     setError('');
-    if (value.length > 0) {
-      const results = fuse.search(value).map(r => r.item);
-      setSuggestions(results.slice(0, 5));
-    } else {
-      setSuggestions([]);
-    }
   };
 
   const submit = (e: React.FormEvent) => {

@@ -18,6 +18,7 @@ const TripCard: React.FC<TripCardProps> = ({ trip }) => {
         <img 
           src={trip.image} 
           alt={trip.title} 
+          loading="lazy"
           className="w-full h-64 object-cover transition-transform duration-500 ease-in-out"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-70"></div>
