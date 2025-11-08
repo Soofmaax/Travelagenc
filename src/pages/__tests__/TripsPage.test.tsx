@@ -1,6 +1,6 @@
 import React from 'react';
 import { describe, it, expect } from 'vitest';
-import { render, screen, fireEvent, within } from '@testing-library/react';
+import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import TripsPage from '../TripsPage';
 import { CurrencyProvider } from '../../hooks/CurrencyProvider';
@@ -24,7 +24,7 @@ describe('TripsPage', () => {
     expect(exploreLinks).toHaveLength(trips.length);
   });
 
-  it('filters trips by destination using FilterSidebar', () => {
+  it('filters trips by destination using FilterSidebar', async () => {
     render(
       <MemoryRouter>
         <CurrencyProvider>
@@ -33,17 +33,16 @@ describe('TripsPage', () => {
       </MemoryRouter>
     );
 
-    // Multiple selects exist (Hero search bar + sidebar). Target the Destination select by its unique option.
-    const selects = screen.getAllByRole('combobox');
-    const destinationSelect = selects.find(s => {
-      const options = within(s).getAllByRole('option');
-      return options.some(o => o.textContent === 'All Destinations');
-    }) as HTMLSelectElement;
+    // Target the Destination select via its unique "All Destinations" option
+    const allDestOption = screen.getByRole('option', { name: 'All Destinations' });
+    const destinationSelect = allDestOption.parentElement as HTMLSelectElement;
 
     // Change destination to Japan
     fireEvent.change(destinationSelect, { target: { value: 'Japan' } });
 
-    const exploreLinks = screen.getAllByRole('link', { name: 'Explorer' });
-    expect(exploreLinks).toHaveLength(1);
+    await waitFor(() => {
+      const exploreLinks = screen.getAllByRole('link', { name: 'Explorer' });
+      expect(exploreLinks).toHaveLength(1);
+    });
   });
 });
