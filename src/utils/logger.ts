@@ -63,7 +63,8 @@ class Logger {
   }
 
   public warn(message: string, ...args: unknown[]): void {
-    if (this.isDevelopment ||warn(this.formatMessage('warn', message), ...args);
+    if (this.isDevelopment || this.isTest) {
+      console.warn(this.formatMessage('warn', message), ...args);
     }
   }
 
