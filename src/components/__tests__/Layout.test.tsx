@@ -19,8 +19,8 @@ describe('Layout', () => {
       </MemoryRouter>
     );
 
-    // Brand in Navbar
-    expect(screen.getByText(/VoyageExplore/)).toBeInTheDocument();
+    // Brand in Navbar (link)
+    expect(screen.getByRole('link', { name: 'VoyageExplore' })).toBeInTheDocument();
     // Outlet content
     expect(screen.getByText(/Home Content/)).toBeInTheDocument();
     // Footer contains contact email
