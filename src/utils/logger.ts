@@ -30,9 +30,12 @@ if (SENTRY_ENABLED) {
 class Logger {
   private static instance: Logger;
   private isDevelopment: boolean;
+  private isTest: boolean;
 
   private constructor() {
-    this.isDevelopment = import.meta.env.MODE === 'development';
+    const mode = import.meta.env.MODE;
+    this.isDevelopment = mode === 'development';
+    this.isTest = mode === 'test';
   }
 
   public static getInstance(): Logger {
@@ -54,14 +57,13 @@ class Logger {
   }
 
   public info(message: string, ...args: unknown[]): void {
-    if (this.isDevelopment) {
+    if (this.isDevelopment || this.isTest) {
       console.info(this.formatMessage('info', message), ...args);
     }
   }
 
   public warn(message: string, ...args: unknown[]): void {
-    if (this.isDevelopment) {
-      console.warn(this.formatMessage('warn', message), ...args);
+    if (this.isDevelopment ||warn(this.formatMessage('warn', message), ...args);
     }
   }
 
