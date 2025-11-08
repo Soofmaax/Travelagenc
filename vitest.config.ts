@@ -25,6 +25,8 @@ export default defineConfig({
         'src/App.tsx',
         'src/main.tsx',
         'src/index.css',
+        // Exclure le dossier de tests E2E Playwright pour éviter conflit
+        'tests/**',
         // Exclure les fichiers de configuration racine
         '**/*.config.{js,ts}',
         'tailwind.config.js',
