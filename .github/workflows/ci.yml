@@ -152,6 +152,16 @@ jobs:
       - name: Bundle size
         run: du -sh dist || true
 
+      - name: Bundle size gate
+        run: |
+          SIZE=$(du -sb dist | cut -f1)
+          THRESHOLD=5000000
+          echo "Bundle size: $SIZE bytes"
+          if [ "$SIZE" -gt "$THRESHOLD" ]; then
+            echo "❌ Bundle size exceeds threshold ($THRESHOLD bytes)"
+            exit 1
+          fi
+
       - name: Bundle visualizer
         run: npx vite-bundle-visualizer
 

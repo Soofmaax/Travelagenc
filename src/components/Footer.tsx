@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Facebook, Twitter, Instagram, Mail, Phone, MapPin } from 'lucide-react';
+import { site } from '../config/site';
 
 const Footer: React.FC = () => {
   return (
@@ -9,14 +10,14 @@ const Footer: React.FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {/* Company Info */}
           <div>
-            <h3 className="font-serif text-2xl font-bold mb-6">VoyageExplore</h3>
+            <h3 className="font-serif text-2xl font-bold mb-6">{site.brandName}</h3>
             <p className="text-blue-100 dark:text-gray-300 mb-6">
               Découvrez le monde avec VoyageExplore, votre compagnon de voyage premium
               depuis 2025. Nous créons des voyages inoubliables adaptés à vos rêves.
             </p>
             <div className="flex space-x-4">
               <a 
-                href="https://facebook.com/voyageexplore" 
+                href={site.socials.facebook} 
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="text-white hover:text-amber-400 dark:hover:text-amber-300 transition"
@@ -25,7 +26,7 @@ const Footer: React.FC = () => {
                 <Facebook size={20} />
               </a>
               <a 
-                href="https://twitter.com/voyageexplore" 
+                href={site.socials.twitter} 
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="text-white hover:text-amber-400 dark:hover:text-amber-300 transition"
@@ -34,7 +35,7 @@ const Footer: React.FC = () => {
                 <Twitter size={20} />
               </a>
               <a 
-                href="https://instagram.com/voyageexplore" 
+                href={site.socials.instagram} 
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="text-white hover:text-amber-400 dark:hover:text-amber-300 transition"
@@ -110,24 +111,24 @@ const Footer: React.FC = () => {
             <ul className="space-y-4">
               <li className="flex items-start space-x-3">
                 <MapPin className="mt-1 flex-shrink-0" size={18} />
-                <span className="text-blue-100 dark:text-gray-300">123 Travel Boulevard, Paris, France</span>
+                <span className="text-blue-100 dark:text-gray-300">{site.contact.address}</span>
               </li>
               <li>
                 <a 
-                  href="tel:+33123456789" 
+                  href={`tel:${site.contact.phone.replace(/\\s+/g, '')}`} 
                   className="flex items-center space-x-3 text-blue-100 dark:text-gray-300 hover:text-amber-400 dark:hover:text-amber-300 transition"
                 >
                   <Phone className="flex-shrink-0" size={18} />
-                  <span>+33 (0)1 23 45 67 89</span>
+                  <span>{site.contact.phone}</span>
                 </a>
               </li>
               <li>
                 <a 
-                  href="mailto:info@voyageexplore.com" 
+                  href={`mailto:${site.contact.email}`} 
                   className="flex items-center space-x-3 text-blue-100 dark:text-gray-300 hover:text-amber-400 dark:hover:text-amber-300 transition"
                 >
                   <Mail className="flex-shrink-0" size={18} />
-                  <span>info@voyageexplore.com</span>
+                  <span>{site.contact.email}</span>
                 </a>
               </li>
             </ul>
@@ -135,7 +136,7 @@ const Footer: React.FC = () => {
         </div>
 
         <div className="border-t border-blue-800 dark:border-gray-700 mt-12 pt-8 text-center text-blue-200 dark:text-gray-400 text-sm">
-          <p>&copy; {new Date().getFullYear()} VoyageExplore. Tous droits réservés.</p>
+          <p>&copy; {new Date().getFullYear()} {site.brandName}. Tous droits réservés.</p>
         </div>
       </div>
     </footer>

@@ -4,6 +4,7 @@ import { Menu, X, Globe, Phone } from 'lucide-react';
 import DarkModeToggle from './DarkModeToggle';
 import { useCurrency } from '../hooks/useCurrency';
 import type { Currency } from '../types';
+import { site } from '../config/site';
 
 interface NavbarProps {
   isScrolled: boolean;
@@ -38,7 +39,7 @@ const Navbar: React.FC<NavbarProps> = ({ isScrolled }) => {
             </div>
             <div className="flex items-center space-x-1">
               <Phone size={14} />
-              <span>+33 (0)1 23 45 67 89</span>
+              <span>{site.contact.phone}</span>
             </div>
           </div>
           <div>
@@ -49,7 +50,7 @@ const Navbar: React.FC<NavbarProps> = ({ isScrolled }) => {
         {/* Navigation principale */}
         <div className="flex items-center justify-between py-4">
           <NavLink to="/" className="font-serif text-2xl font-bold">
-            VoyageExplore
+            {site.brandName}
           </NavLink>
 
           {/* Menu Desktop */}
