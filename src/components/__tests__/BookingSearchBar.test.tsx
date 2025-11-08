@@ -20,7 +20,7 @@ describe('BookingSearchBar', () => {
   });
 
   it('validates date range and shows error when endDate is before startDate', () => {
-    render(
+    const { container } = render(
       <MemoryRouter>
         <BookingSearchBar />
       </MemoryRouter>
@@ -29,10 +29,12 @@ describe('BookingSearchBar', () => {
     const destInput = screen.getByPlaceholderText(/Où souhaitez-vous partir/i) as HTMLInputElement;
     fireEvent.change(destInput, { target: { value: 'France' } });
 
-    const startInput = screen.getByLabelText('Aller') as HTMLInputElement;
-    fireEvent.change(startInput, { target: { value: '2025-01-10' } });
+    // JSDOM doesn't associate labels without htmlFor; query date inputs directly
+    const dateInputs = container.querySelectorAll('input[type="date"]') as NodeListOf<HTMLInputElement>;
+    const startInput = dateInputs[0];
+    const endInput = dateInputs[1];
 
-    const endInput = screen.getByLabelText('Retour') as HTMLInputElement;
+    fireEvent.change(startInput, { target: { value: '2025-01-10' } });
     fireEvent.change(endInput, { target: { value: '2025-01-05' } });
 
     const submit = screen.getByRole('button', { name: /Rechercher/ });
