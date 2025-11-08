@@ -10,12 +10,18 @@ export default defineConfig({
     coverage: {
       provider: 'v8',
       reporter: ['text', 'json', 'html', 'lcov'],
-      // Phase 1: Exclure les zones non encore couvertes pour ne pas bloquer la CI.
-      // Nous réactiverons progressivement ces dossiers au fil de l'ajout des tests.
+      // Inclure explicitement les zones couvertes (utils, hooks, composants testés)
+      include: [
+        'src/utils/**',
+        'src/hooks/**',
+        'src/components/TripCard.tsx',
+        'src/components/TripsGrid.tsx',
+        'src/components/FilterSidebar.tsx',
+        'src/components/Layout.tsx',
+      ],
       exclude: [
         'node_modules/',
         'src/setupTests.ts',
-        'src/components/**',
         'src/pages/**',
         'src/i18n/**',
         'src/data/**',

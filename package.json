@@ -51,7 +51,8 @@
     "madge": "^6.1.0",
     "jscpd": "^3.5.0",
     "cloc": "^2.0.0",
-    "vite-bundle-visualizer": "^1.2.1"
+    "vite-bundle-visualizer": "^1.2.1",
+    "@testing-library/jest-dom": "^6.9.1"
   },
   "lint-staged": {
     "src/**/*.{ts,tsx}": [
