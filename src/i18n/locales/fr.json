@@ -51,5 +51,38 @@
     "readMore": "Lire la Suite",
     "categories": "Catégories",
     "recentPosts": "Articles Récents"
+  },
+  "search": {
+    "placeholder": "Rechercher une destination...",
+    "submit": "Rechercher",
+    "errors": {
+      "requiredCountry": "Veuillez entrer un pays",
+      "suggestion": "Pays non trouvé. Vouliez-vous dire : {{suggestion}} ?",
+      "notFound": "Pays non trouvé. Veuillez vérifier l'orthographe."
+    }
+  },
+  "booking": {
+    "labels": {
+      "destination": "Destination",
+      "outbound": "Aller",
+      "return": "Retour",
+      "travellers": "Voyageurs",
+      "adults": "Adultes",
+      "children": "Enfants",
+      "currency": "Devise"
+    },
+    "placeholders": {
+      "destination": "Où souhaitez-vous partir ?"
+    },
+    "class": {
+      "economy": "Économie",
+      "premium": "Premium",
+      "business": "Business",
+      "first": "Première"
+    },
+    "errors": {
+      "destinationRequired": "Veuillez indiquer une destination",
+      "dateRange": "La date de retour doit être postérieure à la date de départ"
+    }
   }
 }

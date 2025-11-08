@@ -1,4 +1,5 @@
 import '@testing-library/jest-dom';
+import './i18n/config';
 
 // Global polyfill for matchMedia in JSDOM test environment
 if (typeof window !== 'undefined' && typeof window.matchMedia !== 'function') {

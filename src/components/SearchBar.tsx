@@ -3,12 +3,15 @@ import { Search, X } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { COUNTRIES_FR } from '../data/countries';
 import { useDestinationSuggestions } from '../hooks/useDestinationSuggestions';
+import { useTranslation } from 'react-i18next';
+import FormError from './common/FormError';
 
 interface SearchBarProps {
   onSearch: (searchTerm: string) => void;
 }
 
 const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
+  const { t } = useTranslation();
   const [searchTerm, setSearchTerm] = useState('');
   const suggestions = useDestinationSuggestions(COUNTRIES_FR, searchTerm);
   const [isOpen, setIsOpen] = useState(false);
@@ -47,7 +50,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
     e.preventDefault();
 
     if (searchTerm.trim() === '') {
-      setError('Veuillez entrer un pays');
+      setError(t('search.errors.requiredCountry'));
       return;
     }
 
@@ -58,9 +61,9 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
       navigate(`/destination/${encodeURIComponent(exactMatch.toLowerCase())}`);
     } else {
       if (suggestions.length > 0) {
-        setError(`Pays non trouvé. Vouliez-vous dire : ${suggestions[0]} ?`);
+        setError(t('search.errors.suggestion', { suggestion: suggestions[0] }));
       } else {
-        setError("Pays non trouvé. Veuillez vérifier l'orthographe.");
+        setError(t('search.errors.notFound'));
       }
     }
   };
@@ -79,7 +82,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
             type="text"
             value={searchTerm}
             onChange={handleInputChange}
-            placeholder="Rechercher une destination..."
+            placeholder={t('search.placeholder')}
             className="w-full py-3 pl-12 pr-10 rounded-l-full bg-white shadow-md focus:outline-none focus:ring-2 focus:ring-blue-900 text-gray-700"
           />
           <Search
@@ -100,15 +103,13 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
           type="submit"
           className="bg-blue-900 hover:bg-blue-800 text-white px-6 py-3 rounded-r-full transition duration-300 flex items-center"
         >
-          Rechercher
+          {t('search.submit')}
         </button>
       </form>
 
-      {error && (
-        <div className="absolute w-full bg-red-50 border border-red-200 text-red-800 px-4 py-2 rounded-md mt-2 animate-fade-in">
-          {error}
-        </div>
-      )}
+      <div className="absolute w-full mt-2">
+        <FormError message={error} className="w-full bg-red-50 border border-red-200 text-red-800 px-4 py-2 rounded-md animate-fade-in" />
+      </div>
 
       {isOpen && suggestions.length > 0 && (
         <div className="absolute w-full bg-white mt-2 rounded-lg shadow-lg border border-gray-200 z-50">
