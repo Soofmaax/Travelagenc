@@ -3,16 +3,19 @@ import { describe, it, expect } from 'vitest';
 import { MemoryRouter, Routes, Route } from 'react-router-dom';
 import { render, screen } from '@testing-library/react';
 import Layout from '../Layout';
+import { CurrencyProvider } from '../../hooks/CurrencyProvider';
 
 describe('Layout', () => {
   it('renders Navbar, Footer and child Outlet content', () => {
     render(
       <MemoryRouter initialEntries={['/']}>
-        <Routes>
-          <Route element={<Layout />}>
-            <Route index element={<div>Home Content</div>} />
-          </Route>
-        </Routes>
+        <CurrencyProvider>
+          <Routes>
+            <Route element={<Layout />}>
+              <Route index element={<div>Home Content</div>} />
+            </Route>
+          </Routes>
+        </CurrencyProvider>
       </MemoryRouter>
     );
 
