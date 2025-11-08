@@ -1,28 +1,13 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { CalendarRange, Minus, Plus, UserRound, Wallet } from 'lucide-react';
-import Fuse from 'fuse.js';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import type { Currency, SearchParams, TravelClass } from '../types';
 import { currencies } from '../utils/currency';
-
-const countries = [
-  'France',
-  'Espagne',
-  'Italie',
-  'Portugal',
-  'Royaume-Uni',
-  'États-Unis',
-  'Canada',
-  'Japon',
-  'Thaïlande',
-  'Maroc',
-];
-
-const fuse = new Fuse(countries, {
-  includeScore: true,
-  threshold: 0.3,
-  minMatchCharLength: 1,
-});
+import { COUNTRIES_FR } from '../data/countries';
+import { useDestinationSuggestions } from '../hooks/useDestinationSuggestions';
+import { useDateRangeValidation } from '../hooks/useDateRangeValidation';
+import { useTranslation } from 'react-i18next';
+import FormError from './common/FormError';
 
 interface BookingSearchBarProps {
   onDestinationSearch?: (destination: string) => void;
@@ -32,6 +17,7 @@ interface BookingSearchBarProps {
 const clamp = (value: number, min: number, max: number) => Math.max(min, Math.min(max, value));
 
 const BookingSearchBar: React.FC<BookingSearchBarProps> = ({ onDestinationSearch, onSearchParams }) => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
 
@@ -42,13 +28,10 @@ const BookingSearchBar: React.FC<BookingSearchBarProps> = ({ onDestinationSearch
   const [travelClass, setTravelClass] = useState<TravelClass>('economy');
   const [currency, setCurrency] = useState<Currency>('EUR');
 
-  const [suggestions, setSuggestions] = useState<string[]>([]);
-  const [error, setError] = useState('');
+  const suggestions = useDestinationSuggestions(COUNTRIES_FR, destination);
+  const { isValidRange, error: rangeError } = useDateRangeValidation(startDate, endDate);
 
-  const isValidRange = useMemo(() => {
-    if (!startDate || !endDate) return true;
-    return new Date(startDate) <= new Date(endDate);
-  }, [startDate, endDate]);
+  const [error, setError] = useState('');
 
   // Hydrate from URL on mount
   useEffect(() => {
@@ -72,22 +55,16 @@ const BookingSearchBar: React.FC<BookingSearchBarProps> = ({ onDestinationSearch
   const handleDestinationChange = (value: string) => {
     setDestination(value);
     setError('');
-    if (value.length > 0) {
-      const results = fuse.search(value).map(r => r.item);
-      setSuggestions(results.slice(0, 5));
-    } else {
-      setSuggestions([]);
-    }
   };
 
   const submit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!destination.trim()) {
-      setError('Veuillez indiquer une destination');
+      setError(t('booking.errors.destinationRequired'));
       return;
     }
     if (!isValidRange) {
-      setError('La date de retour doit être postérieure à la date de départ');
+      setError(t('booking.errors.dateRange'));
       return;
     }
 
@@ -123,12 +100,12 @@ const BookingSearchBar: React.FC<BookingSearchBarProps> = ({ onDestinationSearch
       <div className="grid grid-cols-1 md:grid-cols-5 gap-4 items-end">
         {/* Destination */}
         <div className="md:col-span-2">
-          <label className="block text-sm text-gray-700 mb-1">Destination</label>
+          <label className="block text-sm text-gray-700 mb-1">{t('booking.labels.destination')}</label>
           <input
             type="text"
             value={destination}
             onChange={e => handleDestinationChange(e.target.value)}
-            placeholder="Où souhaitez-vous partir ?"
+            placeholder={t('booking.placeholders.destination')}
             className="w-full rounded-lg border border-gray-300 bg-white py-2.5 px-3 focus:outline-none focus:ring-2 focus:ring-blue-900"
             list="destinations"
           />
@@ -143,7 +120,7 @@ const BookingSearchBar: React.FC<BookingSearchBarProps> = ({ onDestinationSearch
 
         {/* Dates */}
         <div>
-          <label className="block text-sm text-gray-700 mb-1">Aller</label>
+          <label className="block text-sm text-gray-700 mb-1">{t('booking.labels.outbound')}</label>
           <div className="relative">
             <CalendarRange size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500" />
             <input
@@ -156,7 +133,7 @@ const BookingSearchBar: React.FC<BookingSearchBarProps> = ({ onDestinationSearch
         </div>
 
         <div>
-          <label className="block text-sm text-gray-700 mb-1">Retour</label>
+          <label className="block text-sm text-gray-700 mb-1">{t('booking.labels.return')}</label>
           <div className="relative">
             <CalendarRange size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500" />
             <input
@@ -167,12 +144,12 @@ const BookingSearchBar: React.FC<BookingSearchBarProps> = ({ onDestinationSearch
               className="w-full rounded-lg border border-gray-300 bg-white py-2.5 pl-10 pr-3 focus:outline-none focus:ring-2 focus:ring-blue-900"
             />
           </div>
-          {!isValidRange && <p className="text-xs text-red-600 mt-1">La date de retour doit être après le départ.</p>}
+          {!isValidRange && <p className="text-xs text-red-600 mt-1">{rangeError}</p>}
         </div>
 
         {/* Voyageurs / Classe */}
         <div>
-          <label className="block text-sm text-gray-700 mb-1">Voyageurs</label>
+          <label className="block text-sm text-gray-700 mb-1">{t('booking.labels.travellers')}</label>
           <div className="flex items-center gap-3">
             <div className="flex items-center gap-1">
               <UserRound size={16} className="text-gray-600" />
@@ -183,7 +160,7 @@ const BookingSearchBar: React.FC<BookingSearchBarProps> = ({ onDestinationSearch
               <button type="button" className="p-1 rounded bg-gray-100 hover:bg-gray-200" onClick={() => setTravelers(t => ({ ...t, adults: clamp(t.adults + 1, 1, 9) }))}>
                 <Plus size={14} />
               </button>
-              <span className="text-xs text-gray-600 ml-1">Adultes</span>
+              <span className="text-xs text-gray-600 ml-1">{t('booking.labels.adults')}</span>
             </div>
             <div className="flex items-center gap-1">
               <button type="button" className="p-1 rounded bg-gray-100 hover:bg-gray-200" onClick={() => setTravelers(t => ({ ...t, children: clamp(t.children - 1, 0, 9) }))}>
@@ -193,7 +170,7 @@ const BookingSearchBar: React.FC<BookingSearchBarProps> = ({ onDestinationSearch
               <button type="button" className="p-1 rounded bg-gray-100 hover:bg-gray-200" onClick={() => setTravelers(t => ({ ...t, children: clamp(t.children + 1, 0, 9) }))}>
                 <Plus size={14} />
               </button>
-              <span className="text-xs text-gray-600 ml-1">Enfants</span>
+              <span className="text-xs text-gray-600 ml-1">{t('booking.labels.children')}</span>
             </div>
           </div>
           <div className="mt-2">
@@ -202,17 +179,17 @@ const BookingSearchBar: React.FC<BookingSearchBarProps> = ({ onDestinationSearch
               onChange={e => setTravelClass(e.target.value as TravelClass)}
               className="w-full rounded-lg border border-gray-300 bg-white py-2.5 px-3 focus:outline-none focus:ring-2 focus:ring-blue-900"
             >
-              <option value="economy">Économie</option>
-              <option value="premium">Premium</option>
-              <option value="business">Business</option>
-              <option value="first">Première</option>
+              <option value="economy">{t('booking.class.economy')}</option>
+              <option value="premium">{t('booking.class.premium')}</option>
+              <option value="business">{t('booking.class.business')}</option>
+              <option value="first">{t('booking.class.first')}</option>
             </select>
           </div>
         </div>
 
         {/* Devise */}
         <div>
-          <label className="block text-sm text-gray-700 mb-1">Devise</label>
+          <label className="block text-sm text-gray-700 mb-1">{t('booking.labels.currency')}</label>
           <div className="relative">
             <Wallet size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500" />
             <select
@@ -231,8 +208,8 @@ const BookingSearchBar: React.FC<BookingSearchBarProps> = ({ onDestinationSearch
 
         {/* Submit */}
         <div className="md:col-span-5">
-          {error && <div className="mb-2 rounded-md border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-800">{error}</div>}
-          <button type="submit" className="btn-primary w-full">Rechercher</button>
+          <FormError message={error} />
+          <button type="submit" className="btn-primary w-full">{t('search.submit')}</button>
         </div>
       </div>
     </form>

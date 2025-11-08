@@ -1,4 +1,5 @@
 import React, { Component, ErrorInfo, ReactNode } from 'react';
+import logger from './logger';
 
 interface Props {
   children: ReactNode;
@@ -19,8 +20,11 @@ class ErrorBoundary extends Component<Props, State> {
     return { hasError: true, error };
   }
 
-  public componentDidCatch(error: Error, errorInfo: ErrorInfo) {
-    console.error('Uncaught error:', error, errorInfo);
+  public componentDidCatch(error: Error, _errorInfo: ErrorInfo) {
+    // Use centralized logger. Avoid exposing detailed stacks in production.
+    // Mark _errorInfo as intentionally unused (for linting).
+    void _errorInfo;
+    logger.error('React Error Boundary caught an error', error);
   }
 
   public render() {

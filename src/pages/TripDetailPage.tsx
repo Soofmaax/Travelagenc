@@ -3,6 +3,7 @@ import { useParams, useNavigate, Link } from 'react-router-dom';
 import { trips } from '../data/trips';
 import { Calendar, MapPin, Clock, Star, Users, Check, ChevronRight, ChevronLeft } from 'lucide-react';
 import Newsletter from '../components/Newsletter';
+import { TripSchema } from '../types/schemas';
 
 const TripDetailPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -13,10 +14,11 @@ const TripDetailPage: React.FC = () => {
   const [selectedDate, setSelectedDate] = useState('');
 
   useEffect(() => {
-    if (!trip) {
+    // Validate trip structure; redirect if invalid or missing
+    if (!trip || !TripSchema.safeParse(trip).success) {
       navigate('/trips');
+      return;
     }
-    
     // Reset gallery index when trip changes
     setActiveImage(0);
   }, [trip, navigate]);

@@ -1,222 +1,27 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Search, X } from 'lucide-react';
-import Fuse from 'fuse.js';
 import { useNavigate } from 'react-router-dom';
-
-const countries = [
-  'Afghanistan',
-  'Afrique du Sud',
-  'Albanie',
-  'Algérie',
-  'Allemagne',
-  'Andorre',
-  'Angola',
-  'Antigua-et-Barbuda',
-  'Arabie Saoudite',
-  'Argentine',
-  'Arménie',
-  'Australie',
-  'Autriche',
-  'Azerbaïdjan',
-  'Bahamas',
-  'Bahreïn',
-  'Bangladesh',
-  'Barbade',
-  'Belgique',
-  'Belize',
-  'Bénin',
-  'Bhoutan',
-  'Biélorussie',
-  'Birmanie',
-  'Bolivie',
-  'Bosnie-Herzégovine',
-  'Botswana',
-  'Brésil',
-  'Brunei',
-  'Bulgarie',
-  'Burkina Faso',
-  'Burundi',
-  'Cambodge',
-  'Cameroun',
-  'Canada',
-  'Cap-Vert',
-  'Chili',
-  'Chine',
-  'Chypre',
-  'Colombie',
-  'Comores',
-  'Congo',
-  'Corée du Nord',
-  'Corée du Sud',
-  'Costa Rica',
-  "Côte d'Ivoire",
-  'Croatie',
-  'Cuba',
-  'Danemark',
-  'Djibouti',
-  'République dominicaine',
-  'Égypte',
-  'Émirats arabes unis',
-  'Équateur',
-  'Érythrée',
-  'Espagne',
-  'Estonie',
-  'Eswatini',
-  'États-Unis',
-  'Éthiopie',
-  'Fidji',
-  'Finlande',
-  'France',
-  'Gabon',
-  'Gambie',
-  'Géorgie',
-  'Ghana',
-  'Grèce',
-  'Grenade',
-  'Guatemala',
-  'Guinée',
-  'Guinée équatoriale',
-  'Guinée-Bissau',
-  'Guyana',
-  'Haïti',
-  'Honduras',
-  'Hongrie',
-  'Îles Marshall',
-  'Îles Salomon',
-  'Inde',
-  'Indonésie',
-  'Irak',
-  'Iran',
-  'Irlande',
-  'Islande',
-  'Israël',
-  'Italie',
-  'Jamaïque',
-  'Japon',
-  'Jordanie',
-  'Kazakhstan',
-  'Kenya',
-  'Kirghizistan',
-  'Kiribati',
-  'Koweït',
-  'Laos',
-  'Lesotho',
-  'Lettonie',
-  'Liban',
-  'Libéria',
-  'Libye',
-  'Liechtenstein',
-  'Lituanie',
-  'Luxembourg',
-  'Macédoine du Nord',
-  'Madagascar',
-  'Malaisie',
-  'Malawi',
-  'Maldives',
-  'Mali',
-  'Malte',
-  'Maroc',
-  'Maurice',
-  'Mauritanie',
-  'Mexique',
-  'Micronésie',
-  'Moldavie',
-  'Monaco',
-  'Mongolie',
-  'Monténégro',
-  'Mozambique',
-  'Namibie',
-  'Nauru',
-  'Népal',
-  'Nicaragua',
-  'Niger',
-  'Nigeria',
-  'Norvège',
-  'Nouvelle-Zélande',
-  'Oman',
-  'Ouganda',
-  'Ouzbékistan',
-  'Pakistan',
-  'Palaos',
-  'Palestine',
-  'Panama',
-  'Papouasie-Nouvelle-Guinée',
-  'Paraguay',
-  'Pays-Bas',
-  'Pérou',
-  'Philippines',
-  'Pologne',
-  'Portugal',
-  'Qatar',
-  'République centrafricaine',
-  'République démocratique du Congo',
-  'République tchèque',
-  'Roumanie',
-  'Royaume-Uni',
-  'Russie',
-  'Rwanda',
-  'Saint-Kitts-et-Nevis',
-  'Saint-Marin',
-  'Saint-Vincent-et-les-Grenadines',
-  'Sainte-Lucie',
-  'Salvador',
-  'Samoa',
-  'São Tomé-et-Principe',
-  'Sénégal',
-  'Serbie',
-  'Seychelles',
-  'Sierra Leone',
-  'Singapour',
-  'Slovaquie',
-  'Slovénie',
-  'Somalie',
-  'Soudan',
-  'Soudan du Sud',
-  'Sri Lanka',
-  'Suède',
-  'Suisse',
-  'Suriname',
-  'Syrie',
-  'Tadjikistan',
-  'Tanzanie',
-  'Tchad',
-  'Thaïlande',
-  'Timor oriental',
-  'Togo',
-  'Tonga',
-  'Trinité-et-Tobago',
-  'Tunisie',
-  'Turkménistan',
-  'Turquie',
-  'Tuvalu',
-  'Ukraine',
-  'Uruguay',
-  'Vanuatu',
-  'Vatican',
-  'Venezuela',
-  'Vietnam',
-  'Yémen',
-  'Zambie',
-  'Zimbabwe',
-];
-
-const fuse = new Fuse(countries, {
-  includeScore: true,
-  threshold: 0.3,
-  minMatchCharLength: 1,
-});
+import { COUNTRIES_FR } from '../data/countries';
+import { useDestinationSuggestions } from '../hooks/useDestinationSuggestions';
+import { useTranslation } from 'react-i18next';
+import FormError from './common/FormError';
 
 interface SearchBarProps {
   onSearch: (searchTerm: string) => void;
 }
 
 const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
+  const { t } = useTranslation();
   const [searchTerm, setSearchTerm] = useState('');
-  const [suggestions, setSuggestions] = useState<string[]>([]);
+  const suggestions = useDestinationSuggestions(COUNTRIES_FR, searchTerm);
   const [isOpen, setIsOpen] = useState(false);
   const [error, setError] = useState('');
   const wrapperRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    setIsOpen(suggestions.length > 0 && searchTerm.length > 0);
+  }, [suggestions, searchTerm]);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -233,20 +38,10 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
     const value = e.target.value;
     setSearchTerm(value);
     setError('');
-
-    if (value.length > 0) {
-      const results = fuse.search(value).map(result => result.item);
-      setSuggestions(results.slice(0, 5));
-      setIsOpen(true);
-    } else {
-      setSuggestions([]);
-      setIsOpen(false);
-    }
   };
 
   const handleSuggestionClick = (country: string) => {
     setSearchTerm(country);
-    setSuggestions([]);
     setIsOpen(false);
     navigate(`/destination/${encodeURIComponent(country.toLowerCase())}`);
   };
@@ -255,28 +50,26 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
     e.preventDefault();
 
     if (searchTerm.trim() === '') {
-      setError('Veuillez entrer un pays');
+      setError(t('search.errors.requiredCountry'));
       return;
     }
 
-    const exactMatch = countries.find(country => country.toLowerCase() === searchTerm.toLowerCase());
+    const exactMatch = COUNTRIES_FR.find(country => country.toLowerCase() === searchTerm.toLowerCase());
 
     if (exactMatch) {
       onSearch(exactMatch);
       navigate(`/destination/${encodeURIComponent(exactMatch.toLowerCase())}`);
     } else {
-      const suggestions = fuse.search(searchTerm).map(result => result.item);
       if (suggestions.length > 0) {
-        setError(`Pays non trouvé. Vouliez-vous dire : ${suggestions[0]} ?`);
+        setError(t('search.errors.suggestion', { suggestion: suggestions[0] }));
       } else {
-        setError("Pays non trouvé. Veuillez vérifier l'orthographe.");
+        setError(t('search.errors.notFound'));
       }
     }
   };
 
   const clearSearch = () => {
     setSearchTerm('');
-    setSuggestions([]);
     setError('');
     setIsOpen(false);
   };
@@ -289,7 +82,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
             type="text"
             value={searchTerm}
             onChange={handleInputChange}
-            placeholder="Rechercher une destination..."
+            placeholder={t('search.placeholder')}
             className="w-full py-3 pl-12 pr-10 rounded-l-full bg-white shadow-md focus:outline-none focus:ring-2 focus:ring-blue-900 text-gray-700"
           />
           <Search
@@ -310,15 +103,13 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
           type="submit"
           className="bg-blue-900 hover:bg-blue-800 text-white px-6 py-3 rounded-r-full transition duration-300 flex items-center"
         >
-          Rechercher
+          {t('search.submit')}
         </button>
       </form>
 
-      {error && (
-        <div className="absolute w-full bg-red-50 border border-red-200 text-red-800 px-4 py-2 rounded-md mt-2 animate-fade-in">
-          {error}
-        </div>
-      )}
+      <div className="absolute w-full mt-2">
+        <FormError message={error} className="w-full bg-red-50 border border-red-200 text-red-800 px-4 py-2 rounded-md animate-fade-in" />
+      </div>
 
       {isOpen && suggestions.length > 0 && (
         <div className="absolute w-full bg-white mt-2 rounded-lg shadow-lg border border-gray-200 z-50">

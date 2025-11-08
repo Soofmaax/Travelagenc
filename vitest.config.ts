@@ -7,10 +7,42 @@ export default defineConfig({
     globals: true,
     environment: 'jsdom',
     setupFiles: ['./src/setupTests.ts'],
+    include: ['src/**/*.{test,spec}.{ts,tsx}'],
+    exclude: ['tests/**', 'tests/e2e/**', 'playwright.config.ts'],
     coverage: {
       provider: 'v8',
       reporter: ['text', 'json', 'html', 'lcov'],
-      exclude: ['node_modules/', 'src/setupTests.ts'],
+      // Réactivation de la couverture sur tous les composants
+      include: [
+        'src/utils/**',
+        'src/hooks/**',
+        'src/components/**',
+      ],
+      exclude: [
+        'node_modules/',
+        'src/setupTests.ts',
+        'src/pages/**',
+        'src/i18n/**',
+        'src/data/**',
+        'src/App.tsx',
+        'src/main.tsx',
+        'src/index.css',
+        // Exclure le dossier de tests E2E Playwright pour éviter conflit
+        'tests/**',
+        // Exclure les fichiers de configuration racine
+        '**/*.config.{js,ts}',
+        'tailwind.config.js',
+        'postcss.config.js',
+        'vite.config.ts',
+        'eslint.config.js',
+        'vitest.config.ts',
+      ],
+      thresholds: {
+        statements: 80,
+        branches: 70,
+        functions: 75,
+        lines: 80,
+      },
     },
   },
 });

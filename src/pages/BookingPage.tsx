@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useSearchParams, useNavigate } from 'react-router-dom';
 import { trips } from '../data/trips';
 import { Calendar, Users, CreditCard, Check, Mail, Phone, User } from 'lucide-react';
+import { BookingFormSchema } from '../types/schemas';
 
 interface BookingFormData {
   firstName: string;
@@ -50,7 +51,12 @@ const BookingPage: React.FC = () => {
       const { checked } = e.target as HTMLInputElement;
       setFormData({ ...formData, [name]: checked });
     } else {
-      setFormData({ ...formData, [name]: value });
+      // Coerce passengers to number, leave others as strings
+      if (name === 'passengers') {
+        setFormData({ ...formData, passengers: parseInt(value, 10) || 1 });
+      } else {
+        setFormData({ ...formData, [name]: value });
+      }
     }
     
     // Clear error when field is being edited
@@ -60,23 +66,18 @@ const BookingPage: React.FC = () => {
   };
 
   const validateForm = (): boolean => {
-    const newErrors: Partial<BookingFormData> = {};
-    
-    if (!formData.firstName.trim()) newErrors.firstName = 'First name is required';
-    if (!formData.lastName.trim()) newErrors.lastName = 'Last name is required';
-    
-    if (!formData.email.trim()) {
-      newErrors.email = 'Email is required';
-    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      newErrors.email = 'Email is invalid';
+    const result = BookingFormSchema.safeParse(formData);
+    if (result.success) {
+      setErrors({});
+      return true;
     }
-    
-    if (!formData.phone.trim()) newErrors.phone = 'Phone number is required';
-    if (!formData.departureDate) newErrors.departureDate = 'Please select a departure date';
-    if (!formData.agreeTerms) newErrors.agreeTerms = 'You must agree to the terms and conditions';
-    
+    const newErrors: Partial<BookingFormData> = {};
+    for (const issue of result.error.issues) {
+      const key = issue.path[0] as keyof BookingFormData;
+      newErrors[key] = issue.message;
+    }
     setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
+    return false;
   };
 
   const handleSubmit = (e: React.FormEvent) => {

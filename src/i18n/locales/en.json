@@ -51,5 +51,38 @@
     "readMore": "Read More",
     "categories": "Categories",
     "recentPosts": "Recent Posts"
+  },
+  "search": {
+    "placeholder": "Search for a destination...",
+    "submit": "Search",
+    "errors": {
+      "requiredCountry": "Please enter a country",
+      "suggestion": "Country not found. Did you mean: {{suggestion}}?",
+      "notFound": "Country not found. Please check the spelling."
+    }
+  },
+  "booking": {
+    "labels": {
+      "destination": "Destination",
+      "outbound": "Outbound",
+      "return": "Return",
+      "travellers": "Travelers",
+      "adults": "Adults",
+      "children": "Children",
+      "currency": "Currency"
+    },
+    "placeholders": {
+      "destination": "Where would you like to go?"
+    },
+    "class": {
+      "economy": "Economy",
+      "premium": "Premium",
+      "business": "Business",
+      "first": "First"
+    },
+    "errors": {
+      "destinationRequired": "Please specify a destination",
+      "dateRange": "Return date must be after the outbound date"
+    }
   }
 }
