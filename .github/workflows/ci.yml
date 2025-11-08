@@ -122,8 +122,11 @@ jobs:
           name: cloc-by-file
           path: cloc-by-file.json
 
-      - name: Trufflehog filesystem scan
-        run: npx @trufflesecurity/trufflehog filesystem . --json --fail
+      - name: Trufflehog secret scan
+        uses: trufflesecurity/trufflehog@main
+        with:
+          path: ./
+          extra_args: --only-verified
 
   build:
     name: Build app
