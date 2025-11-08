@@ -12,7 +12,8 @@ describe('Footer', () => {
       </MemoryRouter>
     );
 
-    expect(screen.getByText(/VoyageExplore/)).toBeInTheDocument();
+    // Target the brand heading specifically to avoid multiple matches
+    expect(screen.getByRole('heading', { name: /VoyageExplore/ })).toBeInTheDocument();
     expect(screen.getByText(/info@voyageexplore.com/)).toBeInTheDocument();
   });
 });
