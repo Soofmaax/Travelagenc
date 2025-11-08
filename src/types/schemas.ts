@@ -29,7 +29,10 @@ export type TripDTO = z.infer<typeof TripSchema>;
 export const BookingFormSchema = z.object({
   firstName: z.string().min(1, 'First name is required'),
   lastName: z.string().min(1, 'Last name is required'),
-  email: z.string().email('Invalid email'),
+  email: z
+    .string()
+    .min(1, 'Email is required')
+    .email('Email is invalid'),
   phone: z.string().min(5, 'Phone is required'),
   passengers: z.coerce.number().int().min(1, 'At least 1 passenger'),
   departureDate: z.string().min(1, 'Please select a departure date'),
