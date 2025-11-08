@@ -1,4 +1,4 @@
-name: CI
+name: Quality & Security CI
 
 on:
   push:
