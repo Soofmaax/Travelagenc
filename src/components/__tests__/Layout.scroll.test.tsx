@@ -1,12 +1,13 @@
 import React from 'react';
 import { describe, it, expect } from 'vitest';
 import { MemoryRouter, Routes, Route } from 'react-router-dom';
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
+import { act } from 'react-dom/test-utils';
 import Layout from '../Layout';
 import { CurrencyProvider } from '../../hooks/CurrencyProvider';
 
 describe('Layout scroll behavior', () => {
-  it('updates Navbar style when scrolled beyond threshold', () => {
+  it('updates Navbar style when scrolled beyond threshold', async () => {
     render(
       <MemoryRouter initialEntries={['/']}>
         <CurrencyProvider>
@@ -19,14 +20,16 @@ describe('Layout scroll behavior', () => {
       </MemoryRouter>
     );
 
-    const header = screen.getByRole('banner');
-    expect(header.className).toContain('bg-transparent');
+    expect(screen.getByRole('banner').className).toContain('bg-transparent');
 
-    // Simulate scroll
-    Object.defineProperty(window, 'scrollY', { value: 60, writable: true });
-    window.dispatchEvent(new Event('scroll'));
+    // Simulate scroll and wait for state update
+    act(() => {
+      Object.defineProperty(window, 'scrollY', { value: 60, writable: true });
+      window.dispatchEvent(new Event('scroll'));
+    });
 
-    // Navbar should have scrolled styles
-    expect(header.className).toMatch(/navbar-scrolled/);
+    await waitFor(() => {
+      expect(screen.getByRole('banner').className).toMatch(/navbar-scrolled/);
+    });
   });
 });

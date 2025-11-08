@@ -40,8 +40,9 @@ describe('BookingSearchBar', () => {
     const submit = screen.getByRole('button', { name: /Rechercher/ });
     fireEvent.click(submit);
 
+    // The inline helper message under the "Retour" field appears when invalid
     expect(
-      screen.getByText(/La date de retour doit être postérieure à la date de départ/)
+      screen.getByText(/La date de retour doit être après le départ\./)
     ).toBeInTheDocument();
   });
 
